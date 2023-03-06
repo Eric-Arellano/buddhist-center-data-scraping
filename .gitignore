@@ -1,0 +1,4 @@
+/.pants.*
+/dist/
+/.pids
+venv/
