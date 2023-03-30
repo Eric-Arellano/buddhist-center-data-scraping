@@ -1,4 +1,5 @@
 import json
+import re
 from pathlib import Path
 
 import requests
@@ -51,9 +52,32 @@ def _extract_center_info(name_tag: Tag, details_tag: Tag) -> dict[str, str]:
                 continue
             if value.name in ("a", "i", "em", "strong", "u"):
                 value = value.text
+            value = value.strip()
+            if key == "Address":
+                value = _normalize_address(value)
             result[key] = value.strip()
             key = None
     return result
+
+
+def _normalize_address(value: str) -> str:
+    # Remove 'Mailing:' and everything after it. `re.DOTALL` is because there are sometimes
+    # newlines after the `Mailing:`.
+    value = re.sub(r"\s*Mailing:.*$", "", value, flags=re.DOTALL)
+
+    # Replace '\n' with ', '
+    value = re.sub(r"\n", ", ", value)
+
+    # Remove 'Physical:' if it's at the beginning of the address
+    value = re.sub(r"^\s*Physical:\s*", "", value)
+
+    # Remove trailing whitespace, '\xa0', and 2-letter state code
+    value = re.sub(r"\s*\xa0\s*[A-Z]{2}$", "", value)
+
+    # Replace whitespace, '\xa0', and a little more whitespace followed by text with ', '
+    value = re.sub(r"\s*\xa0\s+(?=\S)", ", ", value)
+
+    return value
 
 
 if __name__ == "__main__":
