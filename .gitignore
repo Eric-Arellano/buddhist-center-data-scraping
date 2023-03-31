@@ -2,3 +2,4 @@
 /dist/
 /.pids
 venv/
+__pycache__

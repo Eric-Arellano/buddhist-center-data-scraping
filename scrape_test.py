@@ -17,7 +17,7 @@ def create_tags(name: str, details_html: str) -> tuple[Tag, Tag]:
 
 def test_basic() -> None:
     tags = create_tags(
-        "Accidental Buddhist Sangha",
+        " Accidental Buddhist Sangha",
         """<p class="entryDetail">
 <strong>Address:</strong>    &nbsp;  IL <br>
 <strong>Tradition:</strong> Mahayana, Zen Buddhist Master Thich Nhat Hahn<br>
@@ -168,6 +168,33 @@ def test_address_remove_whitespace_in_between_street_and_state() -> None:
         "E-mail": "officeazc@gmail.com",
         "Website": "http://www.azc.org",
         "Contact": "Seiju Mammoser",
+    }
+
+    # Contact removed because it's handled by another test.
+    tags = create_tags(
+        "American Young Buddhist Association",
+        """<p class="entryDetail">
+<strong>Address:</strong> 3456 Glenmark Drive&nbsp; Hacienda Heights       CA 91745<br>
+<strong>Tradition:</strong> Mahayana, Humanistic Buddhism<br>
+<strong>Find on:</strong> <a href="http://mapof.it/3456 Glenmark Drive Hacienda Heights       91745 California" target="_blank"><img align="absmiddle" src="images/map.gif" border="0" style="margin-top:2px"></a><br>
+</p>""",
+    )
+    assert _extract_center_info(*tags) == {
+        "name": "American Young Buddhist Association",
+        "Address": "3456 Glenmark Drive, Hacienda Heights CA 91745",
+        "Tradition": "Mahayana, Humanistic Buddhism",
+    }
+
+    tags = create_tags(
+        "All One Dharma-Quaker House   ",
+        """<p class="entryDetail">
+<strong>Address:</strong> 1440 Harvard Street,
+         &nbsp; Santa Monica CA 90404<br>
+</p>""",
+    )
+    assert _extract_center_info(*tags) == {
+        "name": "All One Dharma-Quaker House",
+        "Address": "1440 Harvard Street, Santa Monica CA 90404",
     }
 
 

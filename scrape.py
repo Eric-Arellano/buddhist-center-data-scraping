@@ -59,7 +59,7 @@ _KNOWN_KEY_NAMES = frozenset(
 
 
 def _extract_center_info(name_tag: Tag, details_tag: Tag) -> dict[str, str]:
-    result = {"name": name_tag.text}
+    result = {"name": name_tag.text.strip()}
 
     # Algorithm: Every key is a strong element in the form `Key:`, followed by a value,
     # and ending in a `<br>` or `None` because the details have ended. So, process each
@@ -126,8 +126,8 @@ def _normalize_address(value: str) -> str:
     # newlines after the `Mailing:`.
     value = re.sub(r"\s*Mailing:.*$", "", value, flags=re.DOTALL)
 
-    # Replace '\n' with ', '
-    value = re.sub(r"\n", ", ", value)
+    # Replace `\r\n` and `\n` with `, `.
+    value = re.sub(r"(\r\n|\n)+", ", ", value)
 
     # Remove 'Physical:' if it's at the beginning of the address
     value = re.sub(r"^\s*Physical:\s*", "", value)
@@ -135,9 +135,16 @@ def _normalize_address(value: str) -> str:
     # Remove trailing whitespace, '\xa0', and 2-letter state code
     value = re.sub(r"\s*\xa0\s*[A-Z]{2}$", "", value)
 
-    # Replace whitespace, '\xa0', and a little more whitespace followed by text with ', '
+    # Replace whitespace, '\xa0', and a little more whitespace followed by text. This
+    # sometimes separates the street from the city and state. Replace with `, `.
     value = re.sub(r"\s*\xa0\s+(?=\S)", ", ", value)
 
+    # Some previous rules can result in occurrences like `,,`. Ensure it's only ever one comma.
+    value = re.sub(r",+", ",", value)
+
+    # Finally, replace multiple blank spaces with only one. Note that this happens at the end
+    # because the other replacements are more precise.
+    value = re.sub(r"\s+", " ", value)
     return value
 
 
