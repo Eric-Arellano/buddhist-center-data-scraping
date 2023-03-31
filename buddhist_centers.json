@@ -1,6 +1,7 @@
 [
   {
     "name": "96th Street Sangha",
+    "page": 1,
     "Address": "275 W. 96th Street, #4C New York, NY 10025",
     "Tradition": "Mahayana, Zen/Pureland",
     "Affiliation": "Higashi Honganji",
@@ -11,6 +12,7 @@
   },
   {
     "name": "Abhayagiri Buddhist Monastery",
+    "page": 1,
     "Address": "16201 Tomki Road, Redwood Valley CA 95470",
     "Tradition": "Theravada, Forest Sangha",
     "Affiliation": "Amaravati Buddhist Monastery (UK)",
@@ -21,6 +23,7 @@
   },
   {
     "name": "Accidental Buddhist Sangha",
+    "page": 1,
     "Address": "IL",
     "Tradition": "Mahayana, Zen Buddhist Master Thich Nhat Hahn",
     "Affiliation": "Community of Mindful Living/Order of Interbeing",
@@ -30,6 +33,7 @@
   },
   {
     "name": "Aiea Hongwanji Mission",
+    "page": 1,
     "Address": "99-186 Puakala Street, Aiea, HI 96701",
     "Tradition": "Mahayana, Jodo Shinshu, Pure Land",
     "Affiliation": "Honpa Hongwanji Mission of Hawaii (Jodo Shinshu Hongwanji-ha)",
@@ -39,6 +43,7 @@
   },
   {
     "name": "Aiki-Jutsu Academy & Zen Center of Indianapolis",
+    "page": 1,
     "Address": "8436 North Meridian Street, Indianapolis, IN 46260",
     "Tradition": "Mahayana, Soto Zen",
     "Affiliation": "Enio Sotou Roshi",
@@ -50,6 +55,7 @@
   },
   {
     "name": "Alaska Buddhist Center - Rimay Tenzin Ling",
+    "page": 1,
     "Address": "4448 Pikes Landing Road (UUFF building), Fairbanks, Alaska",
     "Tradition": "Vajrayana, Tibetan,Gelugpa",
     "Phone": "(907) 374-3200",
@@ -59,6 +65,7 @@
   },
   {
     "name": "Alaska Buddhist Peace Fellowship",
+    "page": 1,
     "Address": "Cooper Landing, Alaska or Valdez, Alaska",
     "Tradition": "Non-sectarian, Engaged Buddhism",
     "Phone": "(907) 835-5175",
@@ -67,6 +74,7 @@
   },
   {
     "name": "Albany Shambhala Meditation Group",
+    "page": 1,
     "Address": "c/o Rook, 10 McCormack Road, Slingerlands, NY 12159",
     "Tradition": "Vajrayana, Tibetan, Shambhala Buddhist",
     "Affiliation": "Shambhala International",
@@ -77,6 +85,7 @@
   },
   {
     "name": "Albuquerque KTC (Karma Thegsum Choling)",
+    "page": 1,
     "Address": "139 La Plata NW, NM, Albuquerque NM 87107",
     "Tradition": "Vajrayana, Tibetan, Kagyu",
     "Affiliation": "Karma Triana Darmachakra in Woodstock, NY",
@@ -89,6 +98,7 @@
   },
   {
     "name": "Albuquerque Vipassana Sangha",
+    "page": 1,
     "Address": "Albuquerque NM 87196",
     "Tradition": "Theravada, Vipassana (Insight Meditation)",
     "Website": "http://abqsangha.org",
@@ -97,6 +107,7 @@
   },
   {
     "name": "Albuquerque Zen Center",
+    "page": 1,
     "Address": "2300 Garfield SE, Albuquerque NM 87106",
     "Tradition": "Mahayana, Rinzai Zen",
     "Phone": "(505) 268-4877",
@@ -106,6 +117,7 @@
   },
   {
     "name": "All One Dharma-Quaker House",
+    "page": 1,
     "Address": "1440 Harvard Street, Santa Monica CA 90404",
     "Tradition": "Non-Sectarian, Zen/Vipassana",
     "Affiliation": "General Buddhism",
@@ -117,6 +129,7 @@
   },
   {
     "name": "American Buddhist Association & Harmony Zen Center",
+    "page": 1,
     "Address": "4524 N. Richmond Street, Chicago, IL 60625",
     "Tradition": "Mahayana, Jodo Shinshu & Rinzai / Soto Zen",
     "Affiliation": "Buddhist Temple of Chicago, Harmony Zen Center",
@@ -125,6 +138,7 @@
   },
   {
     "name": "American Buddhist Confederation & Eastern Buddhist Association",
+    "page": 1,
     "Address": "83 Division Street, New York, NY 10002",
     "Tradition": "Mahayana, Pure Land",
     "E-mail": "nengchi@aol.com",
@@ -133,6 +147,7 @@
   },
   {
     "name": "American Buddhist Seminary Temple at Sacramento",
+    "page": 1,
     "Address": "423 Glide Avenue, West Sacramento CA 95691",
     "Tradition": "Theravada",
     "E-mail": "abstemple@gmail.com",
@@ -143,12 +158,14 @@
   },
   {
     "name": "American Young Buddhist Association",
+    "page": 1,
     "Address": "3456 Glenmark Drive, Hacienda Heights CA 91745",
     "Tradition": "Mahayana, Humanistic Buddhism",
     "Contact": "Vice-secretary General: Ven. Hui-Chuang"
   },
   {
     "name": "American Zen Buddhist Temple - Vairocana Monastery",
+    "page": 1,
     "Address": "Vairocana Monastery, RR3 Box 3361, Cresco PA 18326",
     "Tradition": "Mahayana",
     "Phone": "570-895-4600",
@@ -158,6 +175,7 @@
   },
   {
     "name": "Americana Buddhist Temple",
+    "page": 1,
     "Address": "10515 N. Latson Road, Howell, Michigan 48855",
     "Tradition": "Mahayana (Chinese), Shingon Shu",
     "E-mail": "abtemple@sbcglobal.net",
@@ -166,6 +184,7 @@
   },
   {
     "name": "Amida Society",
+    "page": 1,
     "Address": "5918 Cloverly Avenue, Temple City CA 91780",
     "Tradition": "Mahayana, Pure Land Buddhism",
     "E-mail": "amtb-la@cbl-ltd.com",
@@ -173,6 +192,7 @@
   },
   {
     "name": "Amitabha Buddhist Discussion Group of Monterey",
+    "page": 1,
     "Address": "CA",
     "Tradition": "Mahayana, Pure Land Buddhism",
     "Affiliation": "Bodhi Monastery",
@@ -183,6 +203,7 @@
   },
   {
     "name": "Amitabha Buddhist Library in Chicago",
+    "page": 1,
     "Address": "2753-2755 W. Maple Avenue, Lisle IL 60532",
     "Tradition": "Mahayana, Pure Land Buddhism",
     "Phone": "(630)428-9941; (630) 846-6844; (630) 416-9422",
@@ -194,6 +215,7 @@
   },
   {
     "name": "Amitabha Buddhist Society of Houston",
+    "page": 1,
     "Address": "8121 Westglen , Houston, TX 77063",
     "Tradition": "Mahayana, Pureland Learning Center",
     "Contact": "Lee, Chin-Ze (Phone: (713) 339-1864)",
@@ -201,6 +223,7 @@
   },
   {
     "name": "Amitabha Buddhist Society of New York",
+    "page": 1,
     "Address": "41-60 Main Street, Suite 211 Flushing, New York, NY 11355",
     "Tradition": "Mahayana, Pure Land",
     "E-mail": "amitabha_ny@yahoo.com.tw",
@@ -210,6 +233,7 @@
   },
   {
     "name": "Amitabha Buddhist Society of Philadelphia",
+    "page": 1,
     "Address": "1010 Arch Street, 3rd Floor, Philadelphia, PA 19107",
     "Tradition": "Mahayana, Pure Land Buddhism",
     "E-mail": "amtbphila@hotmail.com",
@@ -218,6 +242,7 @@
   },
   {
     "name": "Amitabha Buddhist Society of U.S.A.",
+    "page": 1,
     "Address": "650 S. Bernardo Avenue, CA 94087",
     "Tradition": "Mahayana, Pure Land Buddhism",
     "E-mail": "info@amtb-usa.org",

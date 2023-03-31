@@ -15,13 +15,15 @@ def main() -> None:
     for page in tqdm(range(num_pages)):
         offset = page * 25
         url = f"http://www.buddhanet.info/wbd/country.php?country_id=2&offset={offset}"
-        result.extend(scrape_buddhist_centers(url))
+        result.extend(scrape_buddhist_centers(url, page_number=page + 1))
 
     output = json.dumps(result, indent=2)
     Path("buddhist_centers.json").write_text(output)
 
 
-def scrape_buddhist_centers(url: str) -> list[dict[str, str]]:
+def scrape_buddhist_centers(
+    url: str, *, page_number: int
+) -> list[dict[str, str | int]]:
     headers = {
         # Necessary to avoid a 403.
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0"
@@ -32,7 +34,7 @@ def scrape_buddhist_centers(url: str) -> list[dict[str, str]]:
     entry_names = soup.find_all("p", class_="entryName")
     entry_details = soup.find_all("p", class_="entryDetail")
     return [
-        _extract_center_info(name, details)
+        _extract_center_info(name, details, page_number=page_number)
         for name, details in zip(entry_names, entry_details, strict=True)
     ]
 
@@ -58,8 +60,10 @@ _KNOWN_KEY_NAMES = frozenset(
 )
 
 
-def _extract_center_info(name_tag: Tag, details_tag: Tag) -> dict[str, str]:
-    result = {"name": name_tag.text.strip()}
+def _extract_center_info(
+    name_tag: Tag, details_tag: Tag, *, page_number: int
+) -> dict[str, str | int]:
+    result: dict[str, str | int] = {"name": name_tag.text.strip(), "page": page_number}
 
     # Algorithm: Every key is a strong element in the form `Key:`, followed by a value,
     # and ending in a `<br>` or `None` because the details have ended. So, process each
@@ -148,7 +152,7 @@ def _normalize_address(value: str) -> str:
     return value
 
 
-def _maybe_add_entry_desc(details_tag: Tag, result: dict[str, str]) -> None:
+def _maybe_add_entry_desc(details_tag: Tag, result: dict[str, str | int]) -> None:
     entry_desc = _find_entry_desc(details_tag)
     if entry_desc is None:
         return
