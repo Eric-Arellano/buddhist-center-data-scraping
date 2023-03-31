@@ -229,7 +229,7 @@ def _normalize_address(value: str) -> str:
 
 def _maybe_add_entry_desc(details_tag: Tag, result: dict[str, str | int]) -> None:
     entry_desc = _find_entry_desc(details_tag)
-    if entry_desc is None:
+    if not entry_desc:
         return
 
     if "Notes and Events" not in result:
@@ -243,21 +243,24 @@ def _maybe_add_entry_desc(details_tag: Tag, result: dict[str, str | int]) -> Non
             f"its own text already: {notes}"
         )
 
-    result["Notes and Events"] = entry_desc.get_text(strip=True)
+    result["Notes and Events"] = "\n\n".join(
+        tag.get_text(strip=True).replace("\n", "") for tag in entry_desc
+    )
 
 
-def _find_entry_desc(details_tag: Tag) -> Tag | None:
+def _find_entry_desc(details_tag: Tag) -> list[Tag]:
     current_sibling = details_tag.next_sibling
+    result: list[Tag] = []
     while current_sibling is not None:
         if isinstance(current_sibling, Tag):
-            if current_sibling.get("class") == ["entryDesc"]:
-                return current_sibling
             if current_sibling.name == "hr" or current_sibling.get("class") == [
                 "entryName"
             ]:
-                return None
+                return result
+            elif current_sibling.get_text(strip=True):
+                result.append(current_sibling)
         current_sibling = current_sibling.next_sibling
-    return None
+    return result
 
 
 if __name__ == "__main__":

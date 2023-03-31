@@ -64,6 +64,8 @@ def test_html_elements_in_only_part_of_the_value() -> None:
         "Main Contact": "nevillejacobs@gmail.com (Phone: 907.456.4780)",
     }
 
+
+def test_value_in_key_strong_element() -> None:
     # Removes the address, already tested elsewhere with other centers.
     tags = create_tags(
         "American Young Buddhist Association",
@@ -166,6 +168,39 @@ def test_notes_section() -> None:
         "Tradition": "Theravada, Vipassana (Insight Meditation)",
         "Website": "http://abqsangha.org",
         "Notes and Events": "Contact :PO Box 40722 Albuquerque NM 87196",
+    }
+
+    tags = create_tags(
+        "Dzogchen Community, Colorado",
+        """<p class="entryDetail">
+<strong>Tradition:</strong> Non-Sectarian, Dzogchen in the Transmission of Namkhai Norbu Rinpoche<br>
+<strong>Notes and Events:</strong></p>
+<p class="entryDesc"><!--StartFragment--></p>
+<p>The Dzogchen Community of Colorado is a group of practitioners dedicated to practicing the transmission given to us by Namkhai Norbu Rinpoche. The Dzogchen, or “Great Perfection” are open to anyone who is interested, regardless of culture or religious tradition.</p>
+<p>In the words of our teacher, “The Dzogchen teachings are neither a philosophy, nor a religious doctrine, nor a cultural tradition. Understanding the message of the teachings means discovering one’s own true condition stripped of all the self-deceptions and falsifications that the mind creates. The very meaning of the Tibetan term Dzogchen, ‘Great Perfection,’ refers to the true primordial state of every individual and not to any transcendent reality.” — from Dzogchen, The Self Perfected State by Namkhai Norbu.</p>
+<!--EndFragment-->
+<p></p>
+<p></p>
+<hr>
+""",
+    )
+    assert extract_center_info(*tags, page_number=1) == {
+        "name": "Dzogchen Community, Colorado",
+        "page": 1,
+        "Tradition": "Non-Sectarian, Dzogchen in the Transmission of Namkhai Norbu Rinpoche",
+        "Notes and Events": (
+            "The Dzogchen Community of Colorado is a group of practitioners dedicated to "
+            "practicing the transmission given to us by Namkhai Norbu Rinpoche. The Dzogchen, "
+            "or “Great Perfection” are open to anyone who is interested, regardless of culture or "
+            "religious tradition.\n\n"
+            "In the words of our teacher, “The Dzogchen teachings are neither a philosophy, nor a "
+            "religious doctrine, nor a cultural tradition. Understanding the message of the "
+            "teachings means discovering one’s own true condition stripped of all the "
+            "self-deceptions and falsifications that the mind creates. The very meaning of the "
+            "Tibetan term Dzogchen, ‘Great Perfection,’ refers to the true primordial state of "
+            "every individual and not to any transcendent reality.” — from Dzogchen, The Self "
+            "Perfected State by Namkhai Norbu."
+        ),
     }
 
 
