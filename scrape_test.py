@@ -1,3 +1,4 @@
+import pytest
 from bs4 import BeautifulSoup, Tag
 
 from scrape import _extract_center_info
@@ -7,7 +8,9 @@ def create_tags(name: str, details_html: str) -> tuple[Tag, Tag]:
     name_html = f'<p class="entryName">{name}</p>'
 
     def get_tag(html: str) -> Tag:
-        return BeautifulSoup(html, "html.parser").p
+        res = BeautifulSoup(html, "html.parser").p
+        assert res is not None
+        return res
 
     return get_tag(name_html), get_tag(details_html)
 
@@ -37,7 +40,7 @@ def test_basic() -> None:
     }
 
 
-def test_italics_in_only_part_of_the_value() -> None:
+def test_html_elements_in_only_part_of_the_value() -> None:
     # This removes the `Address`, which is tested elsewhere.
     tags = create_tags(
         "Alaska Buddhist Center - Rimay Tenzin Ling",
@@ -57,6 +60,21 @@ def test_italics_in_only_part_of_the_value() -> None:
         "E-mail": "alaskabuddhistcenter@gmail.com",
         "Website": "http://www.alaskabuddhistcenter.org/",
         "Main Contact": "nevillejacobs@gmail.com (Phone: 907.456.4780)",
+    }
+
+    # Removes the address, already tested elsewhere with other centers.
+    tags = create_tags(
+        "American Young Buddhist Association",
+        """<p class="entryDetail">
+<strong>Tradition:</strong> Mahayana, Humanistic Buddhism<br>
+<strong>Find on:</strong> <a href="http://mapof.it/3456 Glenmark Drive Hacienda Heights       91745 California" target="_blank"><img align="absmiddle" src="images/map.gif" border="0" style="margin-top:2px"></a><br>
+<strong>Contact: Vice-secretary General:</strong> Ven. Hui-Chuang &nbsp;<br>
+</p>""",
+    )
+    assert _extract_center_info(*tags) == {
+        "name": "American Young Buddhist Association",
+        "Tradition": "Mahayana, Humanistic Buddhism",
+        "Contact": "Vice-secretary General: Ven. Hui-Chuang",
     }
 
 
@@ -79,7 +97,6 @@ def test_two_entries_for_key() -> None:
         "Address": "Albuquerque NM 87196",
         "Tradition": "Theravada, Vipassana (Insight Meditation)",
         "Website": "http://abqsangha.org",
-        "E-mail": "jackhat1@aol.com",
         "Community Dharma Leader": "Kathryn Turnipseed, Valerie Roth",
     }
 

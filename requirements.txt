@@ -1,3 +1,7 @@
 beautifulsoup4
 requests
 tqdm
+pytest
+types-beautifulsoup4
+types-requests
+types-tqdm

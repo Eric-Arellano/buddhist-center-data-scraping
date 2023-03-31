@@ -5,6 +5,7 @@ backend_packages = [
     "pants.backend.python",
     "pants.backend.python.lint.black",
     "pants.backend.python.lint.isort",
+    "pants.backend.python.typecheck.mypy",
 ]
 
 [anonymous-telemetry]
@@ -13,3 +14,6 @@ repo_id = "438D52FE-51CE-4831-ABD5-8CE29FFFA4A8"
 
 [source]
 root_patterns = ["/"]
+
+[python]
+interpreter_constraints = [">=3.11"]
