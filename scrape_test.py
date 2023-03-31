@@ -131,6 +131,22 @@ def test_a_element_uses_href() -> None:
     }
 
 
+def test_space_in_key_name() -> None:
+    tags = create_tags(
+        "Aung Mangalar Buddhist Temple",
+        """<p class="entryDetail">
+<strong>Tradition:</strong> Theravada, Burmese<br>
+<strong>Venerable :</strong> Nagasena<br>
+</p>""",
+    )
+    assert extract_center_info(*tags, page_number=1) == {
+        "name": "Aung Mangalar Buddhist Temple",
+        "page": 1,
+        "Tradition": "Theravada, Burmese",
+        "Venerable": "Nagasena",
+    }
+
+
 def test_notes_section() -> None:
     # This removes the Community Dharma Leader duplicate keys, which is tested elsewhere.
     tags = create_tags(

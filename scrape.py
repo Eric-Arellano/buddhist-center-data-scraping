@@ -72,21 +72,51 @@ def scrape_buddhist_centers(
 
 _KNOWN_KEY_NAMES = frozenset(
     [
-        "Abbot:",
-        "Address:",
-        "Affiliation:",
-        "Community Dharma Leader:",
-        "Contact:",
-        "E-mail:",
-        "Founder:",
-        "Notes and Events:",
-        "Main Contact:",
-        "Phone:",
-        "Spiritual Director:",
-        "Teacher:",
-        "Teachers:",
-        "Tradition:",
-        "Website:",
+        "Abbot",
+        "Address",
+        "Affiliation",
+        "Community Dharma Leader",
+        "Community Dharma Leaders",
+        "Contact",
+        "Contacts",
+        "Contact person",
+        "Contact and Teacher",
+        "Deshi",
+        "Director",
+        "Directors",
+        "E-mail",
+        "Executive Director",
+        "Founder",
+        "Founders",
+        "Founder Teacher",
+        "Founder Teachers",
+        "Group Coordinator",
+        "Group Coordinators",
+        "Guiding Teacher",
+        "Guiding Teachers",
+        "Lama-in-residence",
+        "Notes and Events",
+        "Main Contact",
+        "Main Contacts",
+        "Phone",
+        "Practice Leader",
+        "Practice Leaders",
+        "Resident Teacher",
+        "Resident Teachers",
+        "Rev.",
+        "Roshi",
+        "Senior Facilitator",
+        "Senior Facilitators",
+        "Spiritual Advisor",
+        "Spiritual Advisors",
+        "Spiritual Director",
+        "Spiritual Directors",
+        "Spiritual Director and Teacher",
+        "Teacher",
+        "Teachers",
+        "Tradition",
+        "Website",
+        "Venerable",
     ]
 )
 
@@ -123,10 +153,11 @@ def _determine_key_and_value_elements(
 
     # Strong elements can be included in the value for a key. We can skip those here because
     # they will already be handled by looking at the key's `next_sibling`.
-    if not any(strong_element.text.startswith(k) for k in _KNOWN_KEY_NAMES):
+    if not any(re.match(rf"{k}\s*:", strong_element.text) for k in _KNOWN_KEY_NAMES):
         return None
 
     key, key_value_text = strong_element.text.split(":", maxsplit=1)
+    key = key.strip()
     value_elements: list[Tag | NavigableString] = [NavigableString(key_value_text)]
 
     def is_valid_element(element: PageElement) -> TypeGuard[Tag | NavigableString]:
