@@ -80,7 +80,6 @@ def test_html_elements_in_only_part_of_the_value() -> None:
 
 def test_two_entries_for_key() -> None:
     # This removes the Notes section, which is tested elsewhere.
-    # TODO: add test for the Notes
     tags = create_tags(
         "Albuquerque Vipassana Sangha",
         """<p class="entryDetail">
@@ -98,6 +97,27 @@ def test_two_entries_for_key() -> None:
         "Tradition": "Theravada, Vipassana (Insight Meditation)",
         "Website": "http://abqsangha.org",
         "Community Dharma Leader": "Kathryn Turnipseed, Valerie Roth",
+    }
+
+
+def test_notes_section() -> None:
+    # This removes the Community Dharma Leader duplicate keys, which is tested elsewhere.
+    tags = create_tags(
+        "Albuquerque Vipassana Sangha",
+        """<p class="entryDetail">
+<strong>Address:</strong>            &nbsp; Albuquerque NM 87196    <br>
+<strong>Tradition:</strong> Theravada, Vipassana (Insight Meditation)<br>
+<strong>Website:</strong> <a href="http://abqsangha.org">http://abqsangha.org</a><br>
+<strong>Find on:</strong> <a href="http://mapof.it/            Albuquerque 87196     New Mexico" target="_blank"><img align="absmiddle" src="images/map.gif" border="0" style="margin-top:2px"></a><br>
+<strong>Notes and Events:</strong></p><p class="entryDesc">Contact :PO Box 40722 Albuquerque NM 87196<br></p>
+        """,
+    )
+    assert _extract_center_info(*tags) == {
+        "name": "Albuquerque Vipassana Sangha",
+        "Address": "Albuquerque NM 87196",
+        "Tradition": "Theravada, Vipassana (Insight Meditation)",
+        "Website": "http://abqsangha.org",
+        "Notes and Events": "Contact :PO Box 40722 Albuquerque NM 87196",
     }
 
 

@@ -33,7 +33,7 @@ def scrape_buddhist_centers(url: str) -> list[dict[str, str]]:
     entry_details = soup.find_all("p", class_="entryDetail")
     return [
         _extract_center_info(name, details)
-        for name, details in zip(entry_names, entry_details)
+        for name, details in zip(entry_names, entry_details, strict=True)
     ]
 
 
@@ -46,6 +46,7 @@ _KNOWN_KEY_NAMES = frozenset(
         "Contact:",
         "E-mail:",
         "Founder:",
+        "Notes and Events:",
         "Main Contact:",
         "Phone:",
         "Spiritual Director:",
@@ -72,6 +73,9 @@ def _extract_center_info(name_tag: Tag, details_tag: Tag) -> dict[str, str]:
         # Sometimes there are duplicate keys; if so, combine.
         result[key] = f"{result[key]}, {val}" if key in result else val
 
+    # Also check if there is a `<p className="entryDesc">` after, which is used for
+    # "Notes and Events".
+    _maybe_add_entry_desc(details_tag, result)
     return result
 
 
@@ -135,6 +139,39 @@ def _normalize_address(value: str) -> str:
     value = re.sub(r"\s*\xa0\s+(?=\S)", ", ", value)
 
     return value
+
+
+def _maybe_add_entry_desc(details_tag: Tag, result: dict[str, str]) -> None:
+    entry_desc = _find_entry_desc(details_tag)
+    if entry_desc is None:
+        return
+
+    if "Notes and Events" not in result:
+        raise AssertionError(
+            f"entryDesc found for the center {result['name']}, but there was no "
+            "`Notes and Events` key."
+        )
+    if notes := result["Notes and Events"] != "":
+        raise AssertionError(
+            f"entryDesc found for the center {result['name']}, but the 'Notes and Events' key has "
+            f"its own text already: {notes}"
+        )
+
+    result["Notes and Events"] = entry_desc.get_text(strip=True)
+
+
+def _find_entry_desc(details_tag: Tag) -> Tag | None:
+    current_sibling = details_tag.next_sibling
+    while current_sibling is not None:
+        if isinstance(current_sibling, Tag):
+            if current_sibling.get("class") == ["entryDesc"]:
+                return current_sibling
+            if current_sibling.name == "hr" or current_sibling.get("class") == [
+                "entryName"
+            ]:
+                return None
+        current_sibling = current_sibling.next_sibling
+    return None
 
 
 if __name__ == "__main__":
