@@ -1,7 +1,7 @@
 import pytest
 from bs4 import BeautifulSoup, Tag
 
-from scrape import _extract_center_info
+from scrape import extract_center_info
 
 
 def create_tags(name: str, details_html: str) -> tuple[Tag, Tag]:
@@ -29,7 +29,7 @@ def test_basic() -> None:
 </p>
         """,
     )
-    assert _extract_center_info(*tags, page_number=1) == {
+    assert extract_center_info(*tags, page_number=1) == {
         "name": "Accidental Buddhist Sangha",
         "page": 1,
         "Address": "IL",
@@ -54,7 +54,7 @@ def test_html_elements_in_only_part_of_the_value() -> None:
 <strong>Main Contact:</strong> nevillejacobs@gmail.com &nbsp;<i>(Phone: 907.456.4780)</i><br>
 </p>""",
     )
-    assert _extract_center_info(*tags, page_number=1) == {
+    assert extract_center_info(*tags, page_number=1) == {
         "name": "Alaska Buddhist Center - Rimay Tenzin Ling",
         "page": 1,
         "Tradition": "Vajrayana, Tibetan,Gelugpa",
@@ -73,7 +73,7 @@ def test_html_elements_in_only_part_of_the_value() -> None:
 <strong>Contact: Vice-secretary General:</strong> Ven. Hui-Chuang &nbsp;<br>
 </p>""",
     )
-    assert _extract_center_info(*tags, page_number=1) == {
+    assert extract_center_info(*tags, page_number=1) == {
         "name": "American Young Buddhist Association",
         "page": 1,
         "Tradition": "Mahayana, Humanistic Buddhism",
@@ -94,7 +94,7 @@ def test_two_entries_for_key() -> None:
 <strong>Community Dharma Leader:</strong> Valerie Roth &nbsp;<br>
         """,
     )
-    assert _extract_center_info(*tags, page_number=1) == {
+    assert extract_center_info(*tags, page_number=1) == {
         "name": "Albuquerque Vipassana Sangha",
         "page": 1,
         "Address": "Albuquerque NM 87196",
@@ -118,7 +118,7 @@ def test_a_element_uses_href() -> None:
 <strong>Main Contact:</strong> Becky &nbsp;<a href="mailto:ny@amitabhafoundation.us">Email</a> &nbsp;<i>(Phone: 585-261-7094)</i><br>
 </p>""",
     )
-    assert _extract_center_info(*tags, page_number=1) == {
+    assert extract_center_info(*tags, page_number=1) == {
         "name": "Amitabha Foundation",
         "page": 1,
         "Address": "109 Irvington Road, Rochester NY 14620",
@@ -143,7 +143,7 @@ def test_notes_section() -> None:
 <strong>Notes and Events:</strong></p><p class="entryDesc">Contact :PO Box 40722 Albuquerque NM 87196<br></p>
         """,
     )
-    assert _extract_center_info(*tags, page_number=1) == {
+    assert extract_center_info(*tags, page_number=1) == {
         "name": "Albuquerque Vipassana Sangha",
         "page": 1,
         "Address": "Albuquerque NM 87196",
@@ -167,7 +167,7 @@ def test_address_remove_extra_state() -> None:
 <strong>Spiritual Director:</strong> Rev. Thulani Davis &nbsp;<br>
 </p>""",
     )
-    assert _extract_center_info(*tags, page_number=1) == {
+    assert extract_center_info(*tags, page_number=1) == {
         "name": "96th Street Sangha",
         "page": 1,
         "Address": "275 W. 96th Street, #4C New York, NY 10025",
@@ -193,7 +193,7 @@ def test_address_remove_whitespace_in_between_street_and_state() -> None:
 <strong>Contact:</strong> Seiju Mammoser &nbsp;<br>
 </p>""",
     )
-    assert _extract_center_info(*tags, page_number=1) == {
+    assert extract_center_info(*tags, page_number=1) == {
         "name": "Albuquerque Zen Center",
         "page": 1,
         "Address": "2300 Garfield SE, Albuquerque NM 87106",
@@ -213,7 +213,7 @@ def test_address_remove_whitespace_in_between_street_and_state() -> None:
 <strong>Find on:</strong> <a href="http://mapof.it/3456 Glenmark Drive Hacienda Heights       91745 California" target="_blank"><img align="absmiddle" src="images/map.gif" border="0" style="margin-top:2px"></a><br>
 </p>""",
     )
-    assert _extract_center_info(*tags, page_number=1) == {
+    assert extract_center_info(*tags, page_number=1) == {
         "name": "American Young Buddhist Association",
         "page": 1,
         "Address": "3456 Glenmark Drive, Hacienda Heights CA 91745",
@@ -227,7 +227,7 @@ def test_address_remove_whitespace_in_between_street_and_state() -> None:
          &nbsp; Santa Monica CA 90404<br>
 </p>""",
     )
-    assert _extract_center_info(*tags, page_number=1) == {
+    assert extract_center_info(*tags, page_number=1) == {
         "name": "All One Dharma-Quaker House",
         "page": 1,
         "Address": "1440 Harvard Street, Santa Monica CA 90404",
@@ -252,7 +252,7 @@ Mailing: P.O. Box 60062
 <strong>Find on:</strong> <a href="http://mapof.it/Physical: 4448 Pikes Landing Road (UUFF building)&#10;Fairbanks, Alaska&#10;&#10;Mailing: P.O. Box 60062&#10;&#10; Fairbanks 99706 Alaska" target="_blank"><img align="absmiddle" src="images/map.gif" border="0" style="margin-top:2px"></a><br>
 </p>""",
     )
-    assert _extract_center_info(*tags, page_number=1) == {
+    assert extract_center_info(*tags, page_number=1) == {
         "name": "Alaska Buddhist Center - Rimay Tenzin Ling",
         "page": 1,
         "Address": "4448 Pikes Landing Road (UUFF building), Fairbanks, Alaska",

@@ -1,5 +1,7 @@
+import argparse
 import json
 import re
+from argparse import ArgumentParser
 from pathlib import Path
 from typing import TypeGuard
 
@@ -7,18 +9,47 @@ import requests
 from bs4 import BeautifulSoup, NavigableString, PageElement, Tag
 from tqdm import tqdm
 
+_ENTRIES_PER_PAGE = 25
+
 
 def main() -> None:
+    args = create_parser().parse_args()
     result = []
-    # At the time of writing, there were only 2650 centers. So conservatively go up to 3000.
-    num_pages = 3000 // 25
-    for page in tqdm(range(num_pages)):
-        offset = page * 25
+
+    most_recent_saved_page: int | None = None
+    fp = Path("buddhist_centers.json")
+    if args.reuse and fp.exists():
+        result.extend(json.loads(fp.read_text()))
+        if result:
+            most_recent_saved_page = result[-1]["page"]
+
+    for page in tqdm(range(args.to_page), unit="page"):
+        if most_recent_saved_page is not None and page + 1 <= most_recent_saved_page:
+            continue
+        offset = page * _ENTRIES_PER_PAGE
         url = f"http://www.buddhanet.info/wbd/country.php?country_id=2&offset={offset}"
         result.extend(scrape_buddhist_centers(url, page_number=page + 1))
 
     output = json.dumps(result, indent=2)
-    Path("buddhist_centers.json").write_text(output)
+    fp.write_text(output)
+
+
+def create_parser() -> argparse.ArgumentParser:
+    parser = ArgumentParser()
+    parser.add_argument(
+        "--to-page",
+        type=int,
+        # At the time of writing, there were only 2650 centers. So conservatively go up to 3000.
+        default=3000 // _ENTRIES_PER_PAGE,
+        help="Parse up to and including this page.",
+    )
+    parser.add_argument(
+        "--reuse",
+        action="store_true",
+        default=False,
+        help="If true, reuse results already saved to JSON. Only scrape missing pages.",
+    )
+    return parser
 
 
 def scrape_buddhist_centers(
@@ -34,7 +65,7 @@ def scrape_buddhist_centers(
     entry_names = soup.find_all("p", class_="entryName")
     entry_details = soup.find_all("p", class_="entryDetail")
     return [
-        _extract_center_info(name, details, page_number=page_number)
+        extract_center_info(name, details, page_number=page_number)
         for name, details in zip(entry_names, entry_details, strict=True)
     ]
 
@@ -60,7 +91,7 @@ _KNOWN_KEY_NAMES = frozenset(
 )
 
 
-def _extract_center_info(
+def extract_center_info(
     name_tag: Tag, details_tag: Tag, *, page_number: int
 ) -> dict[str, str | int]:
     result: dict[str, str | int] = {"name": name_tag.text.strip(), "page": page_number}
