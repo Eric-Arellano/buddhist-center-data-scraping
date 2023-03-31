@@ -184,9 +184,14 @@ def _normalize_value(value_elements: list[Tag | NavigableString], *, key: str) -
     text_elements = []
     for v in value_elements:
         if isinstance(v, Tag) and v.name == "a":
-            href = v["href"]
-            assert isinstance(href, str)
-            txt = href.removeprefix("mailto:")
+            # This shouldn't actually happen, but for some reason `Hawk Mountain Sangha` is failing
+            # by saying there is no `href`, even though there is!
+            if "href" not in v:
+                txt = v.text
+            else:
+                href = v["href"]
+                assert isinstance(href, str)
+                txt = href.removeprefix("mailto:")
         else:
             txt = v.text
         text_elements.append(txt)
