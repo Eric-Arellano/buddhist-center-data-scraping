@@ -104,6 +104,33 @@ def test_two_entries_for_key() -> None:
     }
 
 
+def test_a_element_uses_href() -> None:
+    tags = create_tags(
+        "Amitabha Foundation",
+        """<p class="entryDetail">
+<strong>Address:</strong> 109 Irvington Road &nbsp; Rochester NY 14620<br>
+<strong>Tradition:</strong> Vajrayana, Tibetan, Drikung Kagyu<br>
+<strong>Affiliation:</strong> Ayang Rinpoche<br>
+<strong>Phone:</strong> 585-261-7094<br> 
+<strong>E-mail:</strong> <a href="mailto:ny@amitabhafoundation.us">ny@amitabhafoundation.us</a><br>
+<strong>Website:</strong> <a href="http://www.amitabhafoundation.us">http://www.amitabhafoundation.us</a><br>
+<strong>Find on:</strong> <a href="http://mapof.it/109 Irvington Road  Rochester 14620 New York" target="_blank"><img align="absmiddle" src="images/map.gif" border="0" style="margin-top:2px"></a><br>
+<strong>Main Contact:</strong> Becky &nbsp;<a href="mailto:ny@amitabhafoundation.us">Email</a> &nbsp;<i>(Phone: 585-261-7094)</i><br>
+</p>""",
+    )
+    assert _extract_center_info(*tags, page_number=1) == {
+        "name": "Amitabha Foundation",
+        "page": 1,
+        "Address": "109 Irvington Road, Rochester NY 14620",
+        "Tradition": "Vajrayana, Tibetan, Drikung Kagyu",
+        "Affiliation": "Ayang Rinpoche",
+        "Phone": "585-261-7094",
+        "E-mail": "ny@amitabhafoundation.us",
+        "Website": "http://www.amitabhafoundation.us",
+        "Main Contact": "Becky ny@amitabhafoundation.us (Phone: 585-261-7094)",
+    }
+
+
 def test_notes_section() -> None:
     # This removes the Community Dharma Leader duplicate keys, which is tested elsewhere.
     tags = create_tags(

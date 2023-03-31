@@ -119,9 +119,22 @@ def _determine_key_and_value_elements(
 
 
 def _normalize_value(value_elements: list[Tag | NavigableString], *, key: str) -> str:
-    text = " ".join(v.text.strip() for v in value_elements).strip()
+    text_elements = []
+    for v in value_elements:
+        if isinstance(v, Tag) and v.name == "a":
+            href = v["href"]
+            assert isinstance(href, str)
+            txt = href.removeprefix("mailto:")
+        else:
+            txt = v.text
+        text_elements.append(txt)
+
+    text = " ".join(text_elements).strip()
     if key == "Address":
         text = _normalize_address(text)
+
+    # Remove extra whitespace and `\xa0` characters in the middle of the string.
+    text = re.sub(r"\s*\xa0\s*|\s{2,}", " ", text)
     return text
 
 
